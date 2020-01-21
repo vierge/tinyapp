@@ -14,7 +14,13 @@
         <h5 class="card-title">TinyApp URL for: <%= longURL %></h5>
         <p class="card-text">Short URL: <a href="/u/<%= shortURL %>"><%= shortURL %></a></p>
       </div>
-      <div class="card-footer text-muted"></div>
+      <div class="card-footer text-muted">
+        <form method="POST" action="urls/<%= shortURL %>/edit">
+          <h3 style = "float: left">EDIT:</h3>
+          <input class="form-control" type="text" name="newURL" id="newURL" placeholder="http://" style="float: left; width: 50%">
+          <button class="btn btn-primary" type="submit" style="float:right">Submit New URL</button>
+        </form>
+      </div>
     </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
