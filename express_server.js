@@ -26,7 +26,7 @@ const validator = (value, property) => {
   for (let key in users) {
     console.log(`COMPARING KEY ${users[key][property]} to ${value}`);
     if (users[key][property] === value) {
-      return true;
+      return users[key];
     };
   }
   return false;
@@ -83,14 +83,22 @@ app.post("/urls/:shortURL/edit", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  
-  res.cookie("user_id", true);
-  console.log("cookie created!");
-  res.redirect("/urls");
+  const { email, password } = req.body;
+  console.log("FIRING LOGIN VALIDATOR");
+  if (validator(email, "email") && validator(password, "password")) {
+    let key = validator(email, "email");
+    res.cookie("user_id", key.id);
+    console.log("cookie created! user logged in!");
+    res.redirect("/urls");
+  } else {
+    console.log("INVALID LOGIN");
+    res.status(403);
+    res.send("403 error. Invalid Login");
+  };
 });
 
 app.post("/logout", (req, res) => {
-  res.clearCookie("username");
+  res.clearCookie("user_id");
   console.log("COOKIE EATEN");
   res.redirect("/urls");
 });
