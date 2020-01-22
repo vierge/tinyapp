@@ -9,11 +9,17 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(cookieParser());
 
 const urlDatabase = {
-  "b2xVn2": "http://lighthouselabs.ca",
-  "9sm5xk": "http://google.com"
+  "b2xVn2": { longURL: "http://lighthouselabs.ca", userid: "lonley" },
+  "9sm5xk": { longURL: "http://google.com", userid: "lonley" }
 }
 
-const users = {};
+const users = {
+  lonley: {
+    id: "lonley",
+    email: "forever@alone.me",
+    password: "iwantahug"
+  };
+};
 
 const generateRandomString = () => {
   return (Math.random() + 1).toString(36).substring(6);
