@@ -13,6 +13,19 @@ const urlDatabase = {
   "9sm5xk": "http://google.com"
 }
 
+const users = {
+  "userRandomID": {
+    id: "userRandomID", 
+    email: "user@example.com", 
+    password: "purple-monkey-dinosaur"
+  },
+ "user2RandomID": {
+    id: "user2RandomID", 
+    email: "user2@example.com", 
+    password: "dishwasher-funk"
+  }
+};
+
 const generateRandomString = () => {
   return (Math.random() + 1).toString(36).substring(6);
 }
@@ -45,7 +58,8 @@ app.post("/urls/new", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
-  res.render("urls_registration");
+  let templateVars = { username: req.cookies["username"] };
+  res.render("urls_register", templateVars);
 }); 
 
 app.get("/u/:shortURL", (req, res) => {
@@ -75,25 +89,20 @@ app.post("/logout", (req, res) => {
   res.redirect("/urls");
 });
 
-app.get("/", (req, res) => {
+app.post("/register", (req, res) => {
+  const { username, password } = res.body;
+  const newID = generateRandomString();
+  users[newID] = {
+    id: newID,
+    username: username,
+    password: password
+    };
+  res.cookie("user_id", newID);
   res.redirect("/urls");
-});
-
-app.get ("/hello", (req, res) => {
-  res.send("<html><body>HELLO <b>WORLDDDDDD</b></body></html>\n");
 });
 
 app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
-});
-
-app.get("/set", (req, res) => {
-  const a = 1;
-  res.send(`a = ${a}`);
-});
-
-app.get("/fetch", (req, res) => {
-  res.send(`a = ${a}`);
 });
 
 app.listen(PORT, () => {
