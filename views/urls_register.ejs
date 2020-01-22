@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  
+  <title>TINYAPP - Registration page</title>
+</head>
+<body>
+  <%- include('./partials/header') -%>
+  <form action="/register" method="post">
+    <label for="email">ENTER YOUR EMAIL:</label>
+    <input type="email" name="email" id="email">
+    <label for="password">ENTER A PASSWORD:</label>
+    <input type="password" name="password" id="password">
+    <button type="submit">SIGN UP</button>
+  </form>
+</body>
+</html>
