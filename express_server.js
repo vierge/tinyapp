@@ -44,6 +44,10 @@ app.post("/urls/new", (req, res) => {
 
 });
 
+app.get("/register", (req, res) => {
+  res.render("urls_registration");
+}); 
+
 app.get("/u/:shortURL", (req, res) => {
   res.redirect(`${urlDatabase[req.params.shortURL]}`);
 })

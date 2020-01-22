@@ -11,12 +11,12 @@
 </head>
 <body>
   <%- include('./partials/header') -%>
-  <form action="/register" method="post">
-    <label for="email">ENTER YOUR EMAIL:</label>
-    <input type="email" name="email" id="email">
-    <label for="password">ENTER A PASSWORD:</label>
-    <input type="password" name="password" id="password">
-    <button type="submit">SIGN UP</button>
-  </form>
+  <div>
+    <form action="/register" method="post">
+      <input type="email" name="email" id="email" placeholder="EMAIL...">
+      <input type="password" name="password" id="password" placeholder="PASSWORD...">
+      <button type="submit">SIGN UP</button>
+    </form>
+  </div>
 </body>
 </html>
