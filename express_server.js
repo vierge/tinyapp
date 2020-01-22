@@ -19,13 +19,13 @@ const generateRandomString = () => {
   return (Math.random() + 1).toString(36).substring(6);
 }
 
-const emailValidator = (email) => {
+const validator = (value, property) => {
   console.log(`CURRENT USERS:`);
   console.log(users);
-  console.log(`checking for: ${email}`);
+  console.log(`checking for: ${value} in users.${property}`);
   for (let key in users) {
-    console.log(`COMPARING KEY ${users[key].email} to ${email}`);
-    if (users[key].email === email) {
+    console.log(`COMPARING KEY ${users[key][property]} to ${value}`);
+    if (users[key][property] === value) {
       return true;
     };
   }
@@ -34,20 +34,20 @@ const emailValidator = (email) => {
 
 app.get("/urls", (req, res) => {
   let templateVars = { 
-    urls: urlDatabase,
-    username: req.cookies["username"] };
+    urls: urlDatabase
+  };
   res.render("urls_index", templateVars);
 });
 
 app.get("/urls/new", (req, res) => {
-  let templateVars = {
-    username: req.cookies["username"]
-  };
-  res.render("urls_new", templateVars);
+  res.render("urls_new");
 });
 
 app.get("/urls/:shortURL", (req, res) => {
-  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], username: req.cookies["username"]};
+  let templateVars = { 
+    shortURL: req.params.shortURL, 
+    longURL: urlDatabase[req.params.shortURL] 
+  };
   res.render("urls_show", templateVars);
 });
 
@@ -64,7 +64,7 @@ app.get("/register", (req, res) => {
 }); 
 
 app.get("/login", (req, res) => {
-  res.render("login");
+  res.render("urls_login");
 });
 
 app.get("/u/:shortURL", (req, res) => {
@@ -83,8 +83,9 @@ app.post("/urls/:shortURL/edit", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  res.cookie("username", req.body.username);
-  console.log ("cookie created!");
+  
+  res.cookie("user_id", true);
+  console.log("cookie created!");
   res.redirect("/urls");
 });
 
@@ -96,15 +97,15 @@ app.post("/logout", (req, res) => {
 
 app.post("/register", (req, res) => {
   const { email, password } = req.body;
-  console.log("FIRING VALIDATOR");
-  if ( email && password && !emailValidator(email)) {
+  console.log("FIRING EMAIL VALIDATOR");
+  if ( email && password && !validator(email, "email")) {
     const newID = generateRandomString();
     users[newID] = {
       id: newID,
       email: email,
       password: password
       };
-    res.cookie("user_id", newID);
+    res.cookie("user_id", true);
     console.log(users);
     res.redirect("/urls");
   } else {
