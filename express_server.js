@@ -13,21 +13,23 @@ const urlDatabase = {
   "9sm5xk": "http://google.com"
 }
 
-const users = {
-  "userRandomID": {
-    id: "userRandomID", 
-    email: "user@example.com", 
-    password: "purple-monkey-dinosaur"
-  },
- "user2RandomID": {
-    id: "user2RandomID", 
-    email: "user2@example.com", 
-    password: "dishwasher-funk"
-  }
-};
+const users = {};
 
 const generateRandomString = () => {
   return (Math.random() + 1).toString(36).substring(6);
+}
+
+const emailValidator = (email) => {
+  console.log(`CURRENT USERS:`);
+  console.log(users);
+  console.log(`checking for: ${email}`);
+  for (let key in users) {
+    console.log(`COMPARING KEY ${users[key].email} to ${email}`);
+    if (users[key].email === email) {
+      return true;
+    };
+  }
+  return false;
 }
 
 app.get("/urls", (req, res) => {
@@ -58,9 +60,12 @@ app.post("/urls/new", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
-  let templateVars = { username: req.cookies["username"] };
-  res.render("urls_register", templateVars);
+  res.render("urls_register");
 }); 
+
+app.get("/login", (req, res) => {
+  res.render("login");
+});
 
 app.get("/u/:shortURL", (req, res) => {
   res.redirect(`${urlDatabase[req.params.shortURL]}`);
@@ -90,15 +95,22 @@ app.post("/logout", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  const { username, password } = res.body;
-  const newID = generateRandomString();
-  users[newID] = {
-    id: newID,
-    username: username,
-    password: password
-    };
-  res.cookie("user_id", newID);
-  res.redirect("/urls");
+  const { email, password } = req.body;
+  console.log("FIRING VALIDATOR");
+  if ( email && password && !emailValidator(email)) {
+    const newID = generateRandomString();
+    users[newID] = {
+      id: newID,
+      email: email,
+      password: password
+      };
+    res.cookie("user_id", newID);
+    console.log(users);
+    res.redirect("/urls");
+  } else {
+    res.status(400);
+    res.send("400 Error. That user already exists!");
+  }
 });
 
 app.get("/urls.json", (req, res) => {
@@ -107,4 +119,4 @@ app.get("/urls.json", (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`example app listening on ${PORT}!`);
-})
+});
