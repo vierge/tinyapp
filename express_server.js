@@ -6,7 +6,7 @@ const cookieSession = require("cookie-session");
 const PORT = 8080;
 
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieSession({
   session: "session",
   keys: ["key1", "key2"]
@@ -60,7 +60,7 @@ const urlsForUser = (id) => {
 //GETS
 
 app.get("/urls", (req, res) => {
-  let templateVars = { 
+  let templateVars = {
     urls: urlsForUser(req.session),
     loggedIn: req.session.user_id
   };
@@ -69,18 +69,21 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
+  let templateVars = {
+    loggedIn: req.session.user_id
+  }
   if (req.session.user_id) {
-    res.render("urls_new");
+    res.render("urls_new", templateVars);
   } else {
     res.redirect("/login");
   }
 });
 
 app.get("/urls/:shortURL", (req, res) => {
-  let templateVars = { 
-    shortURL: req.params.shortURL, 
-    longURL: urlDatabase[req.params.shortURL],
-    loggedIn: req.session.user_id 
+  let templateVars = {
+    shortURL: req.params.shortURL,
+    longURL: urlDatabase[req.params.shortURL].longURL,
+    loggedIn: req.session.user_id
   };
   res.render("urls_show", templateVars);
 });
@@ -90,7 +93,7 @@ app.get("/register", (req, res) => {
     loggedIn: req.session.user_id
   }
   res.render("urls_register", templateVars);
-}); 
+});
 
 app.get("/login", (req, res) => {
   let templateVars = {
@@ -110,7 +113,7 @@ app.get("/u/:shortURL", (req, res) => {
 app.post("/urls/new", (req, res) => {
   console.log(req.body);
   let shortURL = generateRandomString();
-  urlDatabase[shortURL] = req.body.longURL;
+  urlDatabase[shortURL] = { longURL: req.body.longURL, userid: req.session.user_id };
   res.redirect(`/urls/${shortURL}`);
 
 });
@@ -122,14 +125,14 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 
 app.post("/urls/:shortURL/edit", (req, res) => {
   if (urlsForUser(req.session)[req.params.shortURL]) {
-  console.log(`updating ${req.params.shortURL} to ${req.body}`)
-  urlDatabase[req.params.shortURL] = req.body.newURL;
-  res.redirect('/urls');
+    console.log(`updating ${req.params.shortURL} to ${req.body}`)
+    urlDatabase[req.params.shortURL] = req.body.newURL;
+    res.redirect('/urls');
   } else {
     res.send("you cannot edit this URL!");
     res.redirect('/urls');
   }
-  
+
 });
 
 app.post("/login", (req, res) => {
@@ -137,15 +140,15 @@ app.post("/login", (req, res) => {
   console.log("FIRING LOGIN VALIDATOR");
   if (validator(email, "email")) {
     const key = validator(email, "email");
-    if(bcrypt.compareSync(password, key.hashedPassword)) {
+    if (bcrypt.compareSync(password, key.hashedPassword)) {
       req.session.user_id = key.id;
       console.log("cookie created! user logged in!");
-      return res.redirect("/urls");    
+      return res.redirect("/urls");
     }
   }
-    console.log("INVALID LOGIN");
-    res.status(403);
-    res.send("403 error. Invalid Login");
+  console.log("INVALID LOGIN");
+  res.status(403);
+  res.send("403 error. Invalid Login");
 });
 
 app.get("/logout", (req, res) => {
@@ -157,14 +160,14 @@ app.get("/logout", (req, res) => {
 app.post("/register", (req, res) => {
   const { email, password } = req.body;
   console.log("FIRING EMAIL VALIDATOR");
-  if ( email && password && !validator(email, "email")) {
+  if (email && password && !validator(email, "email")) {
     const newID = generateRandomString();
     users[newID] = {
       id: newID,
       email: email,
       hashedPassword: bcrypt.hashSync(password, 10)
-      };
-    res.session.user_id = newID;
+    };
+    req.session.user_id = newID;
     console.log(users);
     res.redirect("/urls");
   } else {
