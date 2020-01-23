@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 const app = express();
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -19,7 +20,7 @@ const users = {
   lonley: {
     id: "lonley",
     email: "forever@alone.me",
-    password: "iwantahug"
+    hashedPassword: bcrypt.hashSync("iwantahug", 10)
   }
 }
 
@@ -131,16 +132,17 @@ app.post("/urls/:shortURL/edit", (req, res) => {
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
   console.log("FIRING LOGIN VALIDATOR");
-  if (validator(email, "email") && validator(password, "password")) {
-    let key = validator(email, "email");
-    res.cookie("user_id", key.id);
-    console.log("cookie created! user logged in!");
-    res.redirect("/urls");
-  } else {
+  if (validator(email, "email")) {
+    const key = validator(email, "email");
+    if(bcrypt.compareSync(password, key.hashedPassword)) {
+      res.cookie("user_id", key.id);
+      console.log("cookie created! user logged in!");
+      return res.redirect("/urls");    
+    }
+  }
     console.log("INVALID LOGIN");
     res.status(403);
     res.send("403 error. Invalid Login");
-  };
 });
 
 app.get("/logout", (req, res) => {
@@ -157,7 +159,7 @@ app.post("/register", (req, res) => {
     users[newID] = {
       id: newID,
       email: email,
-      password: password
+      hashedPassword: bcrypt.hashSync(password, 10)
       };
     res.cookie("user_id", true);
     console.log(users);
