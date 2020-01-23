@@ -10,7 +10,11 @@
           <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
         </div>
         <div class="navbar-nav">
+          <% if(loggedIn) { %>
+          <a href="/logout" class="nav-item nav-link">LOGOUT</a> 
+          <% } else { %>
           <a href="/login" class="nav-item nav-link">LOGIN</a>
+          <% } %>
           <a href="/register" class="nav-item nav-link">REGISTER</a>
         </div>
       </div>
