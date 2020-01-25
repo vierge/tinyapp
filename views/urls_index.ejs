@@ -29,6 +29,7 @@
             <td>
               <form method="GET" action="/urls/<%= url %>/">
                 <button class="btn btn-outline-primary" type="submit">EDIT</button>
+              </form>
             </td>
             <td>
               <form method="POST" action="/urls/<%= url %>/delete">
@@ -36,8 +37,6 @@
               </form>
             </td>
           </tr>
-          
-          
         <% } %>
       </tbody>
     </table>
