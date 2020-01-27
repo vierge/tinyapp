@@ -31,6 +31,9 @@ app.use('/urls', urls);
 
 // BASE, LOGIN, AND REGISTRATION FUNCTIONALITY
 
+app.get("/", (req, res) => {
+  res.redirect("/urls");
+})
 
 app.get("/login", (req, res) => {
   let templateVars = {
@@ -40,7 +43,7 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/u/:shortURL", (req, res) => {
-  urlDatabase[req.params.shortURL].views++;
+  urlDatabase[req.params.shortURL].views = 1 ? views++ : 1;
   res.redirect(`${urlDatabase[req.params.shortURL].longURL}`);
 });
 

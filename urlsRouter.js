@@ -33,7 +33,7 @@ router.get("/:shortURL", (req, res) => {
 router.post("/new", (req, res) => {
   console.log(req.body);
   let shortURL = generateRandomString();
-  urlDatabase[shortURL] = { longURL: req.body.longURL, userId: req.session.userId };
+  urlDatabase[shortURL] = { longURL: req.body.longURL, userId: req.session.userId, views: 0 };
   console.log(urlDatabase);
   res.redirect("./");
 

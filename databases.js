@@ -2,8 +2,8 @@
 const bcrypt = require('bcrypt');
 
 const urlDatabase = {
-  "b2xVn2": { longURL: "http://lighthouselabs.ca", userId: "lonley" },
-  "9sm5xk": { longURL: "http://google.com", userId: "lonlon" }
+  "b2xVn2": { longURL: "http://lighthouselabs.ca", userId: "lonley", views: 0 },
+  "9sm5xk": { longURL: "http://google.com", userId: "lonlon", views: 0 }
 };
 
 const userList = {
