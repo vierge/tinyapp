@@ -6,6 +6,7 @@ const cookieSession = require("cookie-session");
 const urls = require('./urlsRouter');
 const PORT = 8080;
 
+const { urlDatabase, userList } = require('./databases');
 const { generateRandomString, userValidator } = require('./helpers');
 
 app.set('view engine', 'ejs');
@@ -51,8 +52,8 @@ app.get("/u/:shortURL", (req, res) => {
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
   console.log("FIRING LOGIN userValidator");
-  if (userValidator(email, "email")) {
-    const key = userValidator(email, "email");
+  if (userValidator(email, "email", userList)) {
+    const key = userValidator(email, "email", userList);
     if (bcrypt.compareSync(password, key.hashedPassword)) {
       req.session.userId = key.id;
       console.log("cookie created! user logged in!");
@@ -73,7 +74,7 @@ app.get("/logout", (req, res) => {
 app.post("/register", (req, res) => {
   const { email, password } = req.body;
   console.log("FIRING EMAIL userValidator");
-  if (email && password && !userValidator(email, "email")) {
+  if (email && password && !userValidator(email, "email", userList)) {
     const newID = generateRandomString();
     userList[newID] = {
       id: newID,

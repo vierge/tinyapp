@@ -1,12 +1,12 @@
-const { urlDatabase }  = require('./databases');
+const { urlDatabase, userList }  = require('./databases');
+const { urlsForUser } = require('./helpers')
 const router = require('express').Router();
 
-router.get("/urls", (req, res) => {
+router.get("/", (req, res) => {
   let templateVars = {
     urls: urlsForUser(req.session, urlDatabase),
     loggedIn: req.session.userId
   };
-  console.log(urlsForUser(req.session, urlDatabase));
   res.render("urls_index", templateVars);
 });
 
