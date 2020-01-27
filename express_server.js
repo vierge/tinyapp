@@ -15,11 +15,26 @@ app.use(cookieSession({
   session: "session",
   keys: ["key1", "key2"]
 }));
+
+// this is up high so as to override all other site functionality. a request to a valid shortURL should always proceed
+app.get("/u/:shortURL", (req, res) => {
+  console.log(urlDatabase[req.params.shortURL]);
+  // urlDatabase[req.params.shortURL].views = 1 ? views++ : 1;
+  if (urlDatabase[req.params.shortURL] === undefined) {
+    res.status(400);
+    res.send("invalid link! did you remember to append 'http://' ???")
+  } else {
+  res.redirect(`${urlDatabase[req.params.shortURL].longURL}`); // KNOWN BUG: without "http://" longURL renders as undefined and BREAKKSKSKSKSKKD
+  }
+});
+
 // VALIDATION MIDDLEWARE: CHECKS IF USER IS LOGGED IN. should fire on EVERY PAGE LOAD
+
+
 app.use((req, res, next) => {
   console.log(req.path);
-  const flag = (req.path !== '/login' && req.path !== '/register')
-  if (!req.session.userId && flag) {
+  const flag = '/login' || '/register' || '/u'
+  if (!req.session.userId && !flag) {
     res.redirect("/login");
   } else {
     next();
@@ -40,11 +55,6 @@ app.get("/login", (req, res) => {
     loggedIn: req.session.userId
   };
   res.render("urls_login", templateVars);
-});
-
-app.get("/u/:shortURL", (req, res) => {
-  urlDatabase[req.params.shortURL].views = 1 ? views++ : 1;
-  res.redirect(`${urlDatabase[req.params.shortURL].longURL}`);
 });
 
 
