@@ -5,8 +5,8 @@ const generateRandomString = () => {
 const userValidator = (value, property, database) => {
   console.log(`CURRENT USERS:`);
   console.log(database);
-  console.log(`checking for: ${value} in ${database[property]}`);
   for (let key in database) {
+    console.log(`checking for: ${value} in ${key}`);
     console.log(`COMPARING KEY ${database[key][property]} to ${value}`);
     if (database[key][property] === value) {
       return database[key];

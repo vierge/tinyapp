@@ -15,21 +15,19 @@ app.use(cookieSession({
   session: "session",
   keys: ["key1", "key2"]
 }));
-app.use('/urls', urls);
-
 // VALIDATION MIDDLEWARE: CHECKS IF USER IS LOGGED IN. should fire on EVERY PAGE LOAD
-
-
-
-app.use('/', (req, res, next) => {
+app.use((req, res, next) => {
   console.log(req.path);
-  if (!req.session.userId && req.path !== '/login') {
+  const flag = (req.path !== '/login' && req.path !== '/register')
+  if (!req.session.userId && flag) {
     res.redirect("/login");
   } else {
     next();
   }
 });
+// ROUTER 
 
+app.use('/urls', urls);
 
 // BASE, LOGIN, AND REGISTRATION FUNCTIONALITY
 
@@ -68,7 +66,7 @@ app.post("/login", (req, res) => {
 app.get("/logout", (req, res) => {
   req.session = null;
   console.log("COOKIE EATEN");
-  res.redirect("/urls");
+  res.redirect("/");
 });
 
 app.post("/register", (req, res) => {

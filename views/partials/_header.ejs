@@ -4,8 +4,12 @@
     </button>
     <div style="justify-content: space-between">
       <div>
-        <a href="/urls">My URLs</a>
-        <a href="/urls/new">Create New URL</a>
+        <% if(loggedIn) { %>
+          <form action="/urls/new" method="post">
+            <input type="text" name="longURL" placeholder="http://" style="width: 300px; margin: 1em">
+            <button type="submit">new URL</button>
+          </form>
+        <% } %>
       </div>
       <div class="navbar-nav">
         <% if(loggedIn) { %>
@@ -13,7 +17,6 @@
         <% } else { %>
         <a href="/login">LOGIN</a>
         <% } %>
-        <a href="/register">REGISTER</a>
       </div>
     </div>
   </nav>
