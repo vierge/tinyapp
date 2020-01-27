@@ -25,13 +25,14 @@
             <td><%= url %></td>
             <td><a href="<%= urls[url].longURL %>"><%= urls[url].longURL %></a></td>
             <td>
-              <form method="GET" action="/urls/<%= url %>/">
-                <button type="submit">EDIT</button>
+              <form method="POST" action="/urls/<%= url %>/edit">
+                <input type="text" name="newURL" placeholder="http://">
+                <button type="submit"><- CHANGE</button>
               </form>
             </td>
             <td>
               <form method="POST" action="/urls/<%= url %>/delete">
-                <button type="submit">DELETE URL</button>
+                <button type="submit">DELETE</button>
               </form>
             </td>
           </tr>
