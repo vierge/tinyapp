@@ -10,26 +10,6 @@ router.get("/", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
-router.get("/new", (req, res) => {
-  let templateVars = {
-    loggedIn: req.session.userId
-  };
-  if (req.session.userId) {
-    res.render("urls_new", templateVars);
-  } else {
-    res.redirect("/login");
-  }
-});
-
-router.get("/:shortURL", (req, res) => {
-  let templateVars = {
-    shortURL: req.params.shortURL,
-    longURL: urlDatabase[req.params.shortURL].longURL,
-    loggedIn: req.session.userId
-  };
-  res.render("urls_show", templateVars);
-});
-
 router.post("/new", (req, res) => {
   console.log(req.body);
   let shortURL = generateRandomString();
