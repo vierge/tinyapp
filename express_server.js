@@ -30,16 +30,18 @@ app.get("/u/:shortURL", (req, res) => {
 
 // VALIDATION MIDDLEWARE: CHECKS IF USER IS LOGGED IN. should fire on EVERY PAGE LOAD
 
+app.use(express.static('public'));
 
 app.use((req, res, next) => {
   console.log(req.path);
-  const flag = '/login' || '/register' || '/u'
-  if (!req.session.userId && !flag) {
+  if (!req.session.userId && req.path !== '/login' && req.path !== '/register') {
     res.redirect("/login");
   } else {
     next();
   }
 });
+
+
 // ROUTER 
 
 app.use('/urls', urls);
