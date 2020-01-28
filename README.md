@@ -43,3 +43,8 @@ URLS PAGE:
 ![urls list](public/urlspage.png)
 
 ---
+
+#### TODO:
+- Refresh styling
+- Collapse into a single page
+- Responsive design
