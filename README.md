@@ -48,3 +48,4 @@ URLS PAGE:
 - Refresh styling
 - Collapse into a single page
 - Responsive design
+- comment the code. oh god. comment the code
