@@ -7,7 +7,8 @@
 ### TINYAPP IS DESIGNED FOR:
 - READABILITY
 - USABILITY
-  
+
+using **EXTREMELY BRUTALIST DESIGN CUES**
   
 and _**NOTHING ELSE**_.
 
@@ -43,3 +44,9 @@ URLS PAGE:
 ![urls list](public/urlspage.png)
 
 ---
+
+#### TODO:
+- Refresh styling
+- Collapse into a single page
+- Responsive design
+- comment the code. oh god. comment the code
