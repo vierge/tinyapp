@@ -15,6 +15,8 @@ and _**NOTHING ELSE**_.
 ---
 ## USING TINYAPP
 
+### START THE PROGRAM by entering ``npm start`` on the command line, then navigate to localhost:8080 in your browser.
+
 1. **Provide an email and password**
    - any links you create will be associated with this information
 2. **Enter a valid http:// or https:// address in the top form**
